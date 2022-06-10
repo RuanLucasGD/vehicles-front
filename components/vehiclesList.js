@@ -23,15 +23,27 @@ const styles = StyleSheet.create({
 
 export default function VehiclesList({ vehicles, onChangeSelectedItem, onPressItem }) {
 
-    if (!vehicles) { <View /> }
+    if (!vehicles) { return <View /> }
 
-    const listItem = (v) => {
+    vehicles = vehicles;
 
+    var index = 0;
+
+
+
+    for (let i = 0; i < vehicles.length; i++) {
+        let v = vehicles[i];
+        vehicles[i] = { name: v.name, value: v.value, brand: v.brand, index: i }
+    }
+
+    console.log(vehicles)
+
+    const listItem = (v, i) => {
         v = v.item;
         return (
             <TouchableOpacity style={styles.item} onPress={() => {
                 if (onChangeSelectedItem) onChangeSelectedItem([v]);
-                if (onPressItem) onPressItem();
+                if (onPressItem) onPressItem(v);
             }}>
                 <Text style={styles.title}>{v.name}</Text>
             </TouchableOpacity >
@@ -43,7 +55,10 @@ export default function VehiclesList({ vehicles, onChangeSelectedItem, onPressIt
             <FlatList
                 data={vehicles}
                 renderItem={listItem}
-                keyExtractor={v => v._id}
+                keyExtractor={v => {
+                    index += 1;
+                    return index;
+                }}
             />
         </SafeAreaView>
     )
