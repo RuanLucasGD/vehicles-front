@@ -132,18 +132,18 @@ export default function App() {
     return data;
   }
 
-  async function addVehiclesOnServer(name, value, brand) {
+  async function addVehiclesOnServer(name, brand, value) {
 
-    api(apiBaseUrl + `vehicles/add`, 'POST', { vehicleId: user.vehicleId, name: name, value: value, brand: brand }).then((data) => {
+    api(apiBaseUrl + `vehicles/add`, 'POST', { vehicleId: user.vehicleId, name: name, brand: brand, value: value }).then((data) => {
 
       setVehiclesData(data.vehicles)
       console.log(vehiclesdata)
     })
   }
 
-  async function editVehicle(name, value, brand, index) {
+  async function editVehicle(name, brand, value, index) {
 
-    api(apiBaseUrl + `vehicles/edit`, 'POST', { vehicleId: user.vehicleId, name: name, value: value, brand: brand, index: index }).then((data) => {
+    api(apiBaseUrl + `vehicles/edit`, 'POST', { vehicleId: user.vehicleId, brand: brand, name: name, value: value, index: index }).then((data) => {
 
       getVehicles().then((d) => {
         setVehiclesData(d.vehicles)
@@ -159,15 +159,6 @@ export default function App() {
         setVehiclesData(d.vehicles)
       })
     });
-  }
-
-  async function deleteVehicleOfServer(url, id) {
-    fetch(url, {
-      method: "POST",
-      body: JSON.stringify({ id }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((result) => { console.log(result) })
   }
 
   var homeScreen = () => {
@@ -198,7 +189,7 @@ export default function App() {
     return (
       <View style={mainStyle.root}>
         <View style={mainStyle.screen}>
-          <Appbar title={"Criar conta"} />
+          <Appbar title={"Entrar"} />
           <View style={{ marginVertical: 20 }} />
           <Text style={fields.text}>Nome:</Text>
           <TextInput style={fields.inputField} onChangeText={(value) => setUserName(value)} value={userName} />
@@ -320,7 +311,7 @@ export default function App() {
           <TextInput style={fields.inputField} onChangeText={(value) => updateVehicle(v.name, v.brand, value)} value={v.value} />
           <TouchableOpacity style={[mainStyle.button, { marginVertical: 15 }]}
             onPress={() => {
-              editVehicle(v.name, v.value, v.brand, v.index).then(() => {
+              editVehicle(v.name, v.brand, v.value, v.index).then(() => {
                 setCurrentScreen(LISTING_SCREEN)
               })
             }}>
